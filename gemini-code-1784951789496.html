@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Monthiversary ❤️</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================
+       RESET & BASE STYLES
+       ========================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: #050103;
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Falling Hearts Canvas Background */
+    #bgCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Mobile Frame Container */
+    .mobile-container {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      height: 100%;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    /* Slides */
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: scale(0.95);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    /* ==========================================
+       SLIDE 1: 3D HEART & CLICKER
+       ========================================== */
+    .header-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: #ff3366;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+    }
+
+    .status-text {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #e0b0bc;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      padding: 0 10px;
+    }
+
+    /* 3D Glowing Heart Button */
+    .heart-button-wrapper {
+      margin: 40px 0;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .heart-3d {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #ff0055 0%, #990022 100%);
+      position: relative;
+      transform: rotate(-45deg);
+      box-shadow: 
+        0 0 30px rgba(255, 0, 85, 0.6),
+        0 0 60px rgba(255, 0, 85, 0.3),
+        inset -5px -5px 15px rgba(0, 0, 0, 0.6),
+        inset 5px 5px 15px rgba(255, 255, 255, 0.4);
+      animation: pulse3D 1.8s infinite ease-in-out;
+      transition: transform 0.1s ease;
+    }
+
+    .heart-3d::before,
+    .heart-3d::after {
+      content: "";
+      width: 100px;
+      height: 100px;
+      background: inherit;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart-3d::before {
+      top: -50px;
+      left: 0;
+      box-shadow: inset 5px 5px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .heart-3d::after {
+      left: 50px;
+      top: 0;
+      box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .heart-button-wrapper:active .heart-3d {
+      transform: rotate(-45deg) scale(0.85) !important;
+      box-shadow: 0 0 40px rgba(255, 0, 85, 0.9);
+    }
+
+    @keyframes pulse3D {
+      0%, 100% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.08); }
+    }
+
+    .click-counter {
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: #884455;
+      text-transform: uppercase;
+      margin-top: 15px;
+    }
+
+    /* ==========================================
+       SLIDE 2: ANIMATED CUTE TEXT & BUTTON
+       ========================================== */
+    .cute-text {
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+      animation: fadeInText 1.2s ease forwards;
+    }
+
+    @keyframes fadeInText {
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Aesthetic Arrow Button */
+    .next-arrow-btn {
+      background: linear-gradient(135deg, #2b030d 0%, #120005 100%);
+      border: 1px solid #ff0055;
+      color: #ffb3c1;
+      padding: 16px 28px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+      transition: all 0.3s ease;
+      animation: floatBtn 2s infinite ease-in-out;
+    }
+
+    .next-arrow-btn .arrow {
+      font-size: 1.3rem;
+      transition: transform 0.3s ease;
+    }
+
+    .next-arrow-btn:active {
+      transform: scale(0.95);
+      background: #ff0055;
+      color: #ffffff;
+    }
+
+    @keyframes floatBtn {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ==========================================
+       SLIDE 3: ENVELOPE & LETTER ANIMATION
+       ========================================== */
+    .envelope-container {
+      position: relative;
+      width: 280px;
+      height: 180px;
+      cursor: pointer;
+      perspective: 1000px;
+      margin-top: 50px;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: #2a0812;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 0, 85, 0.2);
+    }
+
+    .envelope .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-top: 100px solid #4a0d1f;
+      transform-origin: top;
+      transition: transform 0.6s ease 0.2s, z-index 0.2s;
+      z-index: 4;
+    }
+
+    .envelope .pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 140px solid #1a030a;
+      border-right: 140px solid #1a030a;
+      border-bottom: 95px solid #280510;
+      border-radius: 0 0 8px 8px;
+      z-index: 3;
+    }
+
+    /* Letter inside envelope */
+    .letter {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      width: 250px;
+      height: 160px;
+      background: #fff0f3;
+      color: #1a0008;
+      border-radius: 6px;
+      padding: 20px 15px;
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.8s ease 0.6s, height 0.6s ease 1.2s;
+      z-index: 2;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .letter-title {
+      font-family: 'Sacramento', cursive;
+      font-size: 1.8rem;
+      color: #990022;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #ff0055;
+    }
+
+    .letter-content {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #2b000d;
+      font-family: 'Poppins', sans-serif;
+      overflow-y: auto;
+      max-height: 100px;
+    }
+
+    /* Envelope Opened State */
+    .envelope-container.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-container.open .letter {
+      transform: translateY(-110px);
+      height: 280px;
+      z-index: 5;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .envelope-container.open .letter .letter-content {
+      max-height: 200px;
+    }
+
+    .open-hint {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #ff80a0;
+      letter-spacing: 1px;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Hearts Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <main class="mobile-container">
+    
+    <!-- SLIDE 1: Heart Clicker -->
+    <section id="slide1" class="slide active">
+      <div class="header-title">For My Favorite</div>
+      <div class="status-text" id="statusText">Click Haider's Heart</div>
+      
+      <div class="heart-button-wrapper" id="heartBtn">
+        <div class="heart-3d"></div>
+      </div>
+
+      <div class="click-counter">
+        Clicks: <span id="clickCount">0</span> / 6
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Cute Message & Arrow -->
+    <section id="slide2" class="slide">
+      <div class="cute-text">
+        Aww, you looked so cute clicking my heart! 🥹❤️
+      </div>
+      
+      <button class="next-arrow-btn" id="toSlide3Btn">
+        <span>The letter's waiting for you</span>
+        <span class="arrow">➔</span>
+      </button>
+    </section>
+
+    <!-- SLIDE 3: Animated Envelope & Letter -->
+    <section id="slide3" class="slide">
+      <div class="envelope-container" id="envelope">
+        <div class="envelope">
+          <div class="flap"></div>
+          <div class="pocket"></div>
+          <div class="letter">
+            <div class="letter-title">Happy Monthiversary ❤️</div>
+            <div class="letter-content">
+              <p id="letterBody" style="font-weight: 600; text-transform: uppercase;">
+                I LOV YOU SO SO SO MUCH MY FRANCHEZKA YOURE THE LIGHTOF MY LIFE YOUR MY EVRYTHING I HAD SO MUCH FUN MAKLING THIS FOR YOU EVN THO IT TOOK 3 DAY BUT STILL ITS FOR MY BABY HAPPY MONTHASARY AND I PROMISE I WILL NEEVR LEAVE YOU
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="open-hint" id="envelopeHint">Tap the envelope to open 💌</div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ==========================================
+       FALLING HEARTS CANVAS ANIMATION
+       ========================================== */
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const hearts = [];
+    const heartColors = ['rgba(255, 0, 85, ', 'rgba(153, 0, 34, ', 'rgba(255, 77, 136, ', 'rgba(80, 0, 20, '];
+
+    class FloatingHeart {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 20;
+        this.size = Math.random() * 12 + 8;
+        this.speedY = Math.random() * 1.5 + 0.8;
+        this.speedX = Math.sin(Math.random() * Math.PI * 2) * 0.5;
+        this.colorBase = heartColors[Math.floor(Math.random() * heartColors.length)];
+        this.opacity = Math.random() * 0.6 + 0.2;
+      }
+
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        if (this.y < -20) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.fillStyle = this.colorBase + this.opacity + ')';
+        ctx.beginPath();
+        const topCurveHeight = this.size * 0.3;
+        ctx.moveTo(0, topCurveHeight);
+        ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+        ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+        ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+        ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 25; i++) {
+      hearts.push(new FloatingHeart());
+    }
+
+    function animateCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach(h => {
+        h.update();
+        h.draw();
+      });
+      requestAnimationFrame(animateCanvas);
+    }
+    animateCanvas();
+
+    /* ==========================================
+       INTERACTIVE SLIDE LOGIC
+       ========================================== */
+    let clickCount = 0;
+    const requiredClicks = 6;
+
+    const heartBtn = document.getElementById('heartBtn');
+    const clickCountEl = document.getElementById('clickCount');
+    const statusTextEl = document.getElementById('statusText');
+    
+    const slide1 = document.getElementById('slide1');
+    const slide2 = document.getElementById('slide2');
+    const slide3 = document.getElementById('slide3');
+
+    const toSlide3Btn = document.getElementById('toSlide3Btn');
+    const envelope = document.getElementById('envelope');
+    const envelopeHint = document.getElementById('envelopeHint');
+
+    // Slide 1 Heart Clicks
+    heartBtn.addEventListener('click', () => {
+      clickCount++;
+      clickCountEl.textContent = clickCount;
+
+      // Update text right after the FIRST click
+      if (clickCount >= 1 && clickCount < requiredClicks) {
+        statusTextEl.style.opacity = '0';
+        setTimeout(() => {
+          statusTextEl.textContent = "Click more, I need more of your love...";
+          statusTextEl.style.color = "#ff6688";
+          statusTextEl.style.opacity = '1';
+        }, 150);
+      }
+
+      // Reached 6 clicks -> transition to Slide 2
+      if (clickCount >= requiredClicks) {
+        setTimeout(() => {
+          slide1.classList.remove('active');
+          slide2.classList.add('active');
+        }, 300);
+      }
+    });
+
+    // Slide 2 Arrow Button -> Transition to Slide 3
+    toSlide3Btn.addEventListener('click', () => {
+      slide2.classList.remove('active');
+      slide3.classList.add('active');
+    });
+
+    // Slide 3 Envelope Toggle
+    envelope.addEventListener('click', () => {
+      envelope.classList.toggle('open');
+      if (envelope.classList.contains('open')) {
+        envelopeHint.textContent = "Swipe/scroll inside letter to read 💌";
+      } else {
+        envelopeHint.textContent = "Tap the envelope to open 💌";
+      }
+    });
+  </script>
+</body>
+</html>
