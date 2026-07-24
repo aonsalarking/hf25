@@ -229,11 +229,11 @@
        ========================================== */
     .envelope-container {
       position: relative;
-      width: 280px;
+      width: 290px;
       height: 180px;
       cursor: pointer;
       perspective: 1000px;
-      margin-top: 50px;
+      margin-top: 60px;
     }
 
     .envelope {
@@ -251,8 +251,8 @@
       left: 0;
       width: 0;
       height: 0;
-      border-left: 140px solid transparent;
-      border-right: 140px solid transparent;
+      border-left: 145px solid transparent;
+      border-right: 145px solid transparent;
       border-top: 100px solid #4a0d1f;
       transform-origin: top;
       transition: transform 0.6s ease 0.2s, z-index 0.2s;
@@ -265,8 +265,8 @@
       left: 0;
       width: 0;
       height: 0;
-      border-left: 140px solid #1a030a;
-      border-right: 140px solid #1a030a;
+      border-left: 145px solid #1a030a;
+      border-right: 145px solid #1a030a;
       border-bottom: 95px solid #280510;
       border-radius: 0 0 8px 8px;
       z-index: 3;
@@ -276,13 +276,13 @@
     .letter {
       position: absolute;
       bottom: 10px;
-      left: 15px;
-      width: 250px;
+      left: 12px;
+      width: 266px;
       height: 160px;
       background: #fff0f3;
       color: #1a0008;
       border-radius: 6px;
-      padding: 20px 15px;
+      padding: 16px 14px;
       box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
       transition: transform 0.8s ease 0.6s, height 0.6s ease 1.2s;
       z-index: 2;
@@ -294,17 +294,35 @@
       font-family: 'Sacramento', cursive;
       font-size: 1.8rem;
       color: #990022;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       border-bottom: 1px solid #ff0055;
     }
 
+    /* Enable Smooth Mobile Touch Scrolling */
     .letter-content {
       font-size: 0.85rem;
-      line-height: 1.5;
+      line-height: 1.6;
       color: #2b000d;
       font-family: 'Poppins', sans-serif;
-      overflow-y: auto;
-      max-height: 100px;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      max-height: 95px;
+      padding-right: 8px;
+      user-select: text; /* Allows reading and touch scrolling */
+    }
+
+    /* Custom Scrollbar for Letter */
+    .letter-content::-webkit-scrollbar {
+      width: 5px;
+    }
+    .letter-content::-webkit-scrollbar-track {
+      background: rgba(255, 0, 85, 0.15);
+      border-radius: 10px;
+    }
+    .letter-content::-webkit-scrollbar-thumb {
+      background: #ff0055;
+      border-radius: 10px;
     }
 
     /* Envelope Opened State */
@@ -314,18 +332,18 @@
     }
 
     .envelope-container.open .letter {
-      transform: translateY(-110px);
-      height: 280px;
+      transform: translateY(-130px);
+      height: 310px;
       z-index: 5;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
     .envelope-container.open .letter .letter-content {
-      max-height: 200px;
+      max-height: 230px;
     }
 
     .open-hint {
-      margin-top: 25px;
+      margin-top: 30px;
       font-size: 0.85rem;
       color: #ff80a0;
       letter-spacing: 1px;
@@ -379,9 +397,18 @@
           <div class="pocket"></div>
           <div class="letter">
             <div class="letter-title">Happy Monthiversary ❤️</div>
-            <div class="letter-content">
-              <p id="letterBody" style="font-weight: 600; text-transform: uppercase;">
-                I LOV YOU SO SO SO MUCH MY FRANCHEZKA YOURE THE LIGHTOF MY LIFE YOUR MY EVRYTHING I HAD SO MUCH FUN MAKLING THIS FOR YOU EVN THO IT TOOK 3 DAY BUT STILL ITS FOR MY BABY HAPPY MONTHASARY AND I PROMISE I WILL NEEVR LEAVE YOU
+            <div class="letter-content" id="letterContent">
+              <!-- EXTENDED SCROLLABLE LETTER CONTENT -->
+              <p style="font-weight: 600; text-transform: uppercase;">
+                I LOVE YOU SO SO SO MUCH MY FRANCHEZKA. YOU'RE THE LIGHT OF MY LIFE, YOU'RE MY EVERYTHING. 
+                <br><br>
+                I AM SO GRATEFUL FOR YOU EVERY SINGLE DAY AND I CAN'T BELIEVE WE MADE IT THIS FAR! EVERY SECOND WITH YOU IS A TRUE BLESSING.
+                <br><br>
+                I HAD SO MUCH FUN MAKING THIS SPECIAL WEBSITE FOR YOU EVEN THOUGH IT TOOK ME 3 DAYS, BUT STILL IT'S ALL FOR MY BABY. 
+                <br><br>
+                THANK YOU FOR ALL THE LAUGHS, THE UNCONDITIONAL LOVE, AND ALL THE BEAUTIFUL MEMORIES WE SHARE TOGETHER. YOU MEAN THE ABSOLUTE WORLD TO ME. 
+                <br><br>
+                HAPPY MONTHIVERSARY AND I PROMISE I WILL NEVER EVER LEAVE YOU. HERE'S TO SO MANY MORE MONTHS AND YEARS TOGETHER! FOREVER & ALWAYS ❤️
               </p>
             </div>
           </div>
@@ -480,6 +507,7 @@
     const toSlide3Btn = document.getElementById('toSlide3Btn');
     const envelope = document.getElementById('envelope');
     const envelopeHint = document.getElementById('envelopeHint');
+    const letterContent = document.getElementById('letterContent');
 
     // Slide 1 Heart Clicks
     heartBtn.addEventListener('click', () => {
@@ -511,11 +539,16 @@
       slide3.classList.add('active');
     });
 
+    // Prevent scrolling inside the letter from accidentally toggling/closing the envelope
+    letterContent.addEventListener('click', (e) => e.stopPropagation());
+    letterContent.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+    letterContent.addEventListener('touchmove', (e) => e.stopPropagation(), { passive: true });
+
     // Slide 3 Envelope Toggle
     envelope.addEventListener('click', () => {
       envelope.classList.toggle('open');
       if (envelope.classList.contains('open')) {
-        envelopeHint.textContent = "Swipe/scroll inside letter to read 💌";
+        envelopeHint.textContent = "Scroll inside the letter to read 📜💌";
       } else {
         envelopeHint.textContent = "Tap the envelope to open 💌";
       }
